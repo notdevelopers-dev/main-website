@@ -10,6 +10,9 @@
 <style>
   body {
     margin: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
     font: 17px/1.6 system-ui, sans-serif;
   }
   .bar {
@@ -36,56 +39,84 @@
   .bar .brand svg { width: 22px; height: 22px; }
   .bar a:hover { text-decoration: underline; }
   main {
+    width: calc(100% - 32px);
     max-width: 600px;
+    flex: 1;
     margin: 32px auto;
-    padding: 0 16px;
   }
+  footer {
+    padding: 12px 16px;
+    border-top: 1px solid color-mix(in srgb, currentColor 20%, transparent);
+    font-size: 14px;
+    text-align: center;
+  }
+  footer a { color: inherit; }
   h2 { font-size: 20px; margin: 32px 0 8px; }
   li { margin-bottom: 6px; }
   dt { font-weight: 600; margin-top: 14px; }
   dd { margin: 2px 0 0; }
+  details {
+    margin-top: 28px;
+    border: 1px solid color-mix(in srgb, currentColor 20%, transparent);
+    border-radius: 8px;
+    padding: 12px 16px;
+  }
+  summary {
+    cursor: pointer;
+    font-weight: 600;
+  }
+  summary:hover { text-decoration: underline; }
+  details h2:first-of-type { margin-top: 24px; }
 </style>
 </head>
 <body>
 
-<p class="bar"><a class="brand" href="https://notdevelopers.dev"><svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="7" fill="#0f172a"/><rect x="7" y="7" width="4" height="12" rx="2" fill="#5fd0a5"/><circle cx="9" cy="23.5" r="2.3" fill="#5fd0a5"/><circle cx="19" cy="20" r="4.4" fill="none" stroke="#fff" stroke-width="3.2"/><path d="M23.4 7.5v17.5" stroke="#fff" stroke-width="3.2" stroke-linecap="round"/></svg>!developers</a><a href="https://schedule.notdevelopers.dev">Розклад uni</a><a href="https://model.notdevelopers.dev">Макети ДійТут</a></p>
+<p class="bar"><a class="brand" href="https://notdevelopers.dev"><svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="7" fill="#0f172a"/><rect x="7" y="7" width="4" height="12" rx="2" fill="#5fd0a5"/><circle cx="9" cy="23.5" r="2.3" fill="#5fd0a5"/><circle cx="19" cy="20" r="4.4" fill="none" stroke="#fff" stroke-width="3.2"/><path d="M23.4 7.5v17.5" stroke="#fff" stroke-width="3.2" stroke-linecap="round"/></svg>!developers</a><a href="https://diytut.notdevelopers.dev">ДійТут</a><a href="https://schedule.notdevelopers.dev">Розклад uni</a><a href="https://model.notdevelopers.dev">Макети ДійТут (застаріло)</a></p>
 
 <main>
 
 <h1>notdevelopers.dev</h1>
 
-<p>Тут коротко про те, що цей домен нам дає, скільки коштує і як ним користуватися.</p>
+<p>Це сайт команди !developers, на якому розміщено декілька наших проєктів.</p>
 
-<h2>Що дає</h2>
-<ul>
-  <li>Захист через Cloudflare: IP сервера з API не видно ззовні, і атаки впираються в них, а не в нас.</li>
-  <li>Застосунок не зламається при переїзді на інший сервер: міняється один запис у DNS, а не адреса в коді.</li>
-  <li>HTTPS для сайтів і API без ручної роботи з сертифікатами.</li>
-  <li>Піддомен для свого: ім'я.notdevelopers.dev під власні проєкти чи як бажаєте.</li>
-</ul>
+<details>
+  <summary>Інформація про домен</summary>
 
-<h2>Ціна</h2>
-<p>Перший рік безкоштовний (до 10 жовтня 2027). Далі $12,2 на рік, тобто приблизно 80 гривень з людини.</p>
+  <p>Тут коротко про те, що цей домен нам дає, скільки коштує і як ним користуватися.</p>
 
-<h2>Питання</h2>
-<dl>
-  <dt>Як отримати піддомен?</dt>
-  <dd>Напишіть у групу, яке ім'я хочете і куди воно має вести: GitHub Pages, свій сервер чи щось інше. Запис додається за кілька хвилин.</dd>
+  <h2>Що дає</h2>
+  <ul>
+    <li>Захист через Cloudflare: IP сервера з API не видно ззовні, і атаки впираються в них, а не в нас.</li>
+    <li>Застосунок не зламається при переїзді на інший сервер: міняється один запис у DNS, а не адреса в коді.</li>
+    <li>HTTPS для сайтів і API без ручної роботи з сертифікатами.</li>
+    <li>Піддомен для свого: ім'я.notdevelopers.dev під власні проєкти чи як бажаєте.</li>
+  </ul>
 
-  <dt>Що можна там розмістити?</dt>
-  <dd>Резюме, власний чи командний проєкт, тестову версію чогось.</dd>
+  <h2>Ціна</h2>
+  <p>Перший рік безкоштовний (до 10 жовтня 2027). Далі $12,2 на рік, тобто приблизно 80 гривень з людини.</p>
 
-  <dt>Що буде через рік?</dt>
-  <dd>Якщо домен нам потрібен, скидаємось на продовження. Якщо ні, він просто закінчиться.</dd>
+  <h2>Питання</h2>
+  <dl>
+    <dt>Як отримати піддомен?</dt>
+    <dd>Напишіть у групу, яке ім'я хочете і куди воно має вести: GitHub Pages, свій сервер чи щось інше. Запис додається за кілька хвилин.</dd>
 
-  <dt>А якщо хочемо іншу назву?</dt>
-  <dd>Скажіть. Поки адресу не зашито в застосунок, змінити її легко.</dd>
-</dl>
+    <dt>Що можна там розмістити?</dt>
+    <dd>Резюме, власний чи командний проєкт, тестову версію чогось.</dd>
 
-<h2>Ідеї</h2>
-<p>Є ідеї для головної сторінки? Напишіть.</p>
+    <dt>Що буде через рік?</dt>
+    <dd>Якщо домен нам потрібен, скидаємось на продовження. Якщо ні, він просто закінчиться.</dd>
+
+    <dt>А якщо хочемо іншу назву?</dt>
+    <dd>Скажіть. Поки адресу не зашито в застосунок, змінити її легко.</dd>
+  </dl>
+
+  <h2>Ідеї</h2>
+  <p>Є ідеї для головної сторінки? Напишіть.</p>
+</details>
 
 </main>
+
+<footer>Підтримка: <a href="mailto:team@notdevelopers.dev">team@notdevelopers.dev</a></footer>
 
 </body>
 </html>
