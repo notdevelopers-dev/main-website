@@ -795,12 +795,45 @@
         dropdown.hidden = false;
       }
 
-      // <details> працює нативно; JS додає закриття ззовні та по Esc.
+      // <details> лишається клікабельним для сенсорних екранів і клавіатури.
       const closeDropdown = (restoreFocus = false) => {
         if (!dropdown.open) return;
         dropdown.open = false;
         if (restoreFocus) dropdownTrigger.focus();
       };
+
+      // На комп'ютері меню також відкривається при наведенні на «Проєкти»
+      // або стрілку. Коротка затримка не дає йому зникнути під час руху
+      // курсора через проміжок між навігацією та випадаючим списком.
+      const navProjects = dropdown.closest('.nav-projects');
+      const hoverPointer = window.matchMedia('(hover: hover) and (pointer: fine)');
+      let hoverCloseTimer;
+      navProjects?.addEventListener('pointerenter', (event) => {
+        if (!hoverPointer.matches || event.pointerType !== 'mouse') return;
+        clearTimeout(hoverCloseTimer);
+        dropdown.open = true;
+      });
+      navProjects?.addEventListener('pointerleave', (event) => {
+        if (!hoverPointer.matches || event.pointerType !== 'mouse') return;
+        clearTimeout(hoverCloseTimer);
+        hoverCloseTimer = setTimeout(() => {
+          if (navProjects.matches(':hover')) return;
+          // Не закривати меню під час навігації клавіатурою.
+          if (dropdown.contains(document.activeElement) &&
+              document.activeElement.matches(':focus-visible')) return;
+          closeDropdown();
+        }, 180);
+      });
+
+      // Клік мишкою по стрілці не повинен закривати меню,
+      // яке щойно відкрилося завдяки наведенню.
+      // Натискання з клавіатури та дотик залишаються нативними.
+      dropdownTrigger.addEventListener('click', (event) => {
+        if (event.detail > 0 && hoverPointer.matches && navProjects?.matches(':hover')) {
+          event.preventDefault();
+          dropdown.open = true;
+        }
+      });
 
       dropdown.addEventListener('toggle', () => {
         const label = dropdown.open ? 'Приховати список проєктів' : 'Показати список проєктів';
