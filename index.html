@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="uk">
 <head>
@@ -48,6 +49,10 @@
     flex: 1;
     margin: 32px auto;
   }
+  h1 {
+    font-size: 26px;
+    margin: 0 0 12px;
+  }
   footer {
     padding: 12px 16px;
     border-top: 1px solid color-mix(in srgb, currentColor 20%, transparent);
@@ -75,10 +80,24 @@
 </head>
 <body>
 
-<p class="bar"><a class="brand" href="https://notdevelopers.dev"><svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="7" fill="#0f172a"/><rect x="7" y="7" width="4" height="12" rx="2" fill="#5fd0a5"/><circle cx="9" cy="23.5" r="2.3" fill="#5fd0a5"/><circle cx="19" cy="20" r="4.4" fill="none" stroke="#fff" stroke-width="3.2"/><path d="M23.4 7.5v17.5" stroke="#fff" stroke-width="3.2" stroke-linecap="round"/></svg>!developers</a><a href="https://diytut.notdevelopers.dev">ДійТут</a><a href="https://schedule.notdevelopers.dev">Розклад uni</a></p>
+<nav class="bar" aria-label="Основна навігація">
+  <a class="brand" href="https://notdevelopers.dev">
+    <svg viewBox="0 0 32 32" aria-hidden="true">
+      <rect width="32" height="32" rx="7" fill="#0f172a"/>
+      <rect x="7" y="7" width="4" height="12" rx="2" fill="#5fd0a5"/>
+      <circle cx="9" cy="23.5" r="2.3" fill="#5fd0a5"/>
+      <circle cx="19" cy="20" r="4.4" fill="none" stroke="#fff" stroke-width="3.2"/>
+      <path d="M23.4 7.5v17.5" stroke="#fff" stroke-width="3.2" stroke-linecap="round"/>
+    </svg>
+    !developers
+  </a>
+  <a href="https://diytut.notdevelopers.dev">ДійТут</a>
+  <a href="https://schedule.notdevelopers.dev">Розклад uni</a>
+</nav>
 
 <main>
 
+<h1>!developers</h1>
 <p>Це сайт команди !developers, на якому розміщено декілька наших проєктів.</p>
 
 <details>
@@ -118,7 +137,12 @@
 
 </main>
 
-<footer>Підтримка: <a href="mailto:team@notdevelopers.dev">team@notdevelopers.dev</a> або <a href="mailto:diytut-support@googlegroups.com">diytut-support@googlegroups.com</a></footer>
+<footer>
+  Підтримка:
+  <a href="mailto:team@notdevelopers.dev">team@notdevelopers.dev</a>
+  або
+  <a href="mailto:diytut-support@googlegroups.com">diytut-support@googlegroups.com</a>
+</footer>
 
 </body>
 </html>
