@@ -1,148 +1,898 @@
-
 <!doctype html>
 <html lang="uk">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="robots" content="noindex">
 <meta name="color-scheme" content="light dark">
+<meta name="description" content="!developers — команда розробників та її проєкти.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230f172a'/%3E%3Crect x='7' y='7' width='4' height='12' rx='2' fill='%235fd0a5'/%3E%3Ccircle cx='9' cy='23.5' r='2.3' fill='%235fd0a5'/%3E%3Ccircle cx='19' cy='20' r='4.4' fill='none' stroke='%23fff' stroke-width='3.2'/%3E%3Cpath d='M23.4 7.5v17.5' stroke='%23fff' stroke-width='3.2' stroke-linecap='round'/%3E%3C/svg%3E">
-<title>!developers</title>
+<title>Про команду !developers</title>
 <style>
+  :root {
+    color-scheme: light;
+    --bg: #f6f8fb;
+    --surface: #ffffff;
+    --text: #142033;
+    --muted: #586578;
+    --line: #dfe5ee;
+    --accent: #087f65;
+    --accent-soft: #e4f6ef;
+    --shadow: 0 16px 42px rgb(26 47 75 / 6%);
+  }
+
+  /* Темна тема автоматично визначається налаштуваннями системи. */
+  @media (prefers-color-scheme: dark) {
+    :root {
+      color-scheme: dark;
+      --bg: #101722;
+      --surface: #192331;
+      --text: #eef4fa;
+      --muted: #acb9c8;
+      --line: #344154;
+      --accent: #67d5ae;
+      --accent-soft: #203b38;
+      --shadow: 0 16px 42px rgb(0 0 0 / 16%);
+    }
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: var(--header-offset, 110px); }
   body {
-    margin: 0;
     min-height: 100vh;
+    margin: 0;
     display: flex;
     flex-direction: column;
-    font: 17px/1.6 system-ui, sans-serif;
+    font: 16px/1.6 system-ui, -apple-system, "Segoe UI", sans-serif;
+    color: var(--text);
+    background: var(--bg);
   }
-  .bar {
+  a { color: inherit; }
+  a:focus-visible, summary:focus-visible, button:focus-visible {
+    outline: 3px solid var(--accent);
+    outline-offset: 4px;
+    border-radius: 4px;
+  }
+  .container { width: min(100% - 40px, 960px); margin-inline: auto; }
+  [hidden] { display: none !important; }
+
+  .site-header {
     position: sticky;
     top: 0;
     z-index: 10;
-    background: Canvas;
-    margin: 0;
-    padding: 10px 16px;
-    border-bottom: 1px solid color-mix(in srgb, currentColor 20%, transparent);
-    font-size: 15px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--line);
+  }
+  .navigation {
+    min-height: 68px;
     display: flex;
     flex-wrap: wrap;
+    justify-content: space-between;
     align-items: center;
-    gap: 8px 20px;
+    gap: 8px 24px;
   }
-  .bar a {
-    color: inherit;
-    text-decoration: none;
-    font-weight: 500;
-  }
-  .bar .brand {
+  .brand {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
+    font-size: 18px;
+    font-weight: 750;
+    letter-spacing: -.03em;
+    text-decoration: none;
+  }
+  .brand svg { width: 32px; height: 32px; flex: none; }
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 12px 25px;
+    flex-wrap: wrap;
+  }
+  .nav-links > a,
+  .nav-projects > a,
+  .nav-dropdown > summary {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 160ms ease;
+  }
+  .nav-links > a:hover,
+  .nav-projects > a:hover,
+  .nav-dropdown > summary:hover,
+  .nav-dropdown[open] > summary { color: var(--accent); }
+  .nav-projects {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+  }
+  .nav-dropdown > summary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 36px;
+    padding: 0;
+    list-style: none;
+    cursor: pointer;
+  }
+  .nav-dropdown > summary::-webkit-details-marker { display: none; }
+  .nav-dropdown > summary::after {
+    content: "";
+    width: 6px;
+    height: 6px;
+    margin-top: -3px;
+    border-right: 1.5px solid currentColor;
+    border-bottom: 1.5px solid currentColor;
+    transform: translateY(-2px) rotate(45deg);
+    transition: transform 200ms ease;
+  }
+  .nav-dropdown[open] > summary::after {
+    transform: translateY(2px) rotate(225deg);
+  }
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+  .nav-dropdown-menu {
+    position: absolute;
+    top: calc(100% + 10px);
+    left: 0;
+    z-index: 20;
+    min-width: 230px;
+    padding: 7px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: var(--surface);
+    box-shadow: var(--shadow);
+    transform-origin: top left;
+  }
+  .nav-dropdown[open] .nav-dropdown-menu {
+    animation: dropdown-appear 180ms cubic-bezier(.2,.8,.2,1) both;
+  }
+  @keyframes dropdown-appear {
+    from { opacity: 0; transform: translateY(-6px) scale(.98); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  .nav-dropdown-menu a {
+    display: block;
+    padding: 9px 11px;
+    border-radius: 7px;
+    color: var(--text);
+    font-size: 14px;
+    font-weight: 550;
+    text-decoration: none;
+    transition: background-color 150ms ease, color 150ms ease;
+  }
+  .nav-dropdown-menu a:hover {
+    background: var(--accent-soft);
+    color: var(--accent);
+  }
+  .nav-dropdown-menu a + a { margin-top: 2px; }
+  .email-contact {
+    display: inline-flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 2px;
+    min-width: 0;
+    max-width: 100%;
+  }
+  .email-contact a { min-width: 0; overflow-wrap: anywhere; }
+  .copy-email {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    border: 0;
+    border-radius: 7px;
+    background: transparent;
+    color: var(--muted);
+    vertical-align: middle;
+    cursor: pointer;
+    transition: color 150ms ease, background-color 150ms ease;
+  }
+  .copy-email svg { width: 16px; height: 16px; }
+  .copy-email:hover { color: var(--accent); background: var(--accent-soft); }
+  .copy-email[data-status="success"] { color: var(--accent); }
+  .copy-error {
+    color: #b42318;
+    font-size: 12px;
+    font-weight: 650;
+    white-space: nowrap;
+  }
+  @media (prefers-color-scheme: dark) {
+    .copy-error { color: #ffaaa5; }
+  }
+
+  main { flex: 1; padding-block: 65px 72px; }
+  .hero { max-width: 740px; margin-bottom: 52px; }
+  .eyebrow {
+    display: inline-block;
+    margin: 0 0 12px;
+    color: var(--accent);
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+  }
+  h1, h2, h3, p { margin-top: 0; }
+  h1 {
+    margin-bottom: 16px;
+    font-size: clamp(34px, 5vw, 54px);
+    line-height: 1.13;
+    letter-spacing: -.045em;
+  }
+  h1 span { color: var(--accent); }
+  .hero > p:last-child {
+    max-width: 650px;
+    margin-bottom: 0;
+    font-size: 18px;
+    color: var(--muted);
+  }
+
+  .section-header { margin-bottom: 20px; }
+  .section-header h2 { margin-bottom: 4px; font-size: 25px; letter-spacing: -.025em; }
+  .section-header p { margin-bottom: 0; color: var(--muted); }
+  .projects {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+  }
+  .project-card {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    padding: 28px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    box-shadow: var(--shadow);
+    transition: transform 200ms ease, border-color 200ms ease, box-shadow 200ms ease;
+  }
+  @media (hover: hover) {
+    .project-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--accent);
+      box-shadow: 0 20px 44px rgb(26 47 75 / 13%);
+    }
+    .team-group:hover { border-color: var(--accent); }
+  }
+  .project-card:focus-within { border-color: var(--accent); }
+  @media (prefers-color-scheme: dark) and (hover: hover) {
+    .project-card:hover { box-shadow: 0 20px 44px rgb(0 0 0 / 26%); }
+  }
+  /* Одне посилання охоплює картку: URL не дублюється у заголовку та кнопці. */
+  .project-card-anchor {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    min-width: 0;
+    color: inherit;
+    text-decoration: none;
+  }
+  .project-icon {
+    display: grid;
+    place-items: center;
+    width: 54px;
+    height: 54px;
+    margin-bottom: 26px;
+    border-radius: 15px;
+    background: var(--accent-soft);
+    color: var(--accent);
+  }
+  .project-icon svg { width: 28px; height: 28px; }
+  .project-type {
+    margin-bottom: 6px;
+    color: var(--muted);
+    font-size: 12px;
+    font-weight: 750;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+  }
+  .project-card h3 { margin-bottom: 10px; font-size: 24px; letter-spacing: -.02em; }
+  .project-card h3, .project-type { transition: color 150ms ease; }
+  .project-card-anchor:hover .project-type,
+  .project-card-anchor:hover h3 {
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+  .project-card-anchor > p:not(.project-type) { flex: 1; margin-bottom: 26px; color: var(--muted); }
+  .project-link {
+    align-self: flex-start;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    padding: 10px 16px;
+    border-radius: 10px;
+    background: var(--accent);
+    color: var(--bg);
+    font-weight: 700;
+    text-decoration: none;
+    transition: filter 150ms ease;
+  }
+  .project-card-anchor:hover .project-link { filter: brightness(.92); }
+  .project-link svg {
+    width: 17px;
+    height: 17px;
+    transition: transform 180ms ease;
+  }
+  @media (hover: hover) {
+    .project-card-anchor:hover .project-link svg { transform: translateX(3px); }
+  }
+
+  .team-section { margin-top: 70px; }
+  .team-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+  }
+  .team-group {
+    min-width: 0;
+    padding: 24px 26px;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    background: var(--surface);
+    transition: border-color 200ms ease;
+  }
+  .team-group h3 {
+    margin-bottom: 16px;
+    color: var(--accent);
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+  }
+  .team-list { margin: 0; padding: 0; list-style: none; }
+  .team-list li + li { border-top: 1px solid var(--line); }
+  .team-member { padding: 10px 0; }
+  .team-member:first-child { padding-top: 0; }
+  .team-member:last-child { padding-bottom: 0; }
+  .team-name { display: block; font-size: 17px; font-weight: 700; }
+  .team-role { display: block; color: var(--muted); font-size: 13px; }
+
+  .domain-section { margin-top: 70px; }
+  .domain-section h2 { font-size: 25px; letter-spacing: -.025em; }
+  .domain-section details {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 0 24px;
+    /* Плавна зміна висоти блоку в браузерах із підтримкою interpolate-size. */
+    interpolate-size: allow-keywords;
+  }
+  .domain-section summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 20px 0;
+    cursor: pointer;
+    font-weight: 700;
+    list-style: none;
+    transition: color 150ms ease;
+  }
+  .domain-section summary::-webkit-details-marker { display: none; }
+  .domain-section summary::after {
+    content: "";
+    flex: none;
+    width: 8px;
+    height: 8px;
+    border-right: 1.5px solid currentColor;
+    border-bottom: 1.5px solid currentColor;
+    transform: translateY(-2px) rotate(45deg);
+    transition: transform 200ms ease;
+  }
+  .domain-section details[open] > summary::after {
+    transform: translateY(2px) rotate(225deg);
+  }
+  .domain-section summary:hover { color: var(--accent); }
+  .domain-section details::details-content {
+    block-size: 0;
+    overflow: hidden;
+    transition: block-size 250ms ease, content-visibility 250ms allow-discrete;
+  }
+  .domain-section details[open]::details-content { block-size: auto; }
+  .domain-content { padding-bottom: 26px; color: var(--muted); }
+  .domain-content h3 { margin: 28px 0 8px; font-size: 19px; color: var(--text); }
+  .domain-content h3:first-of-type { margin-top: 20px; }
+  .domain-content ul { padding-left: 22px; }
+  .domain-content li { margin-bottom: 8px; }
+  .domain-content dt { margin-top: 15px; font-weight: 700; color: var(--text); }
+  .domain-content dd { margin: 3px 0 0; }
+
+  /* Футер: інформація про команду та контакти без маркерів списку. */
+  .site-footer {
+    background: var(--surface);
+    border-top: 1px solid var(--line);
+    font-size: 15px;
+  }
+  .footer-inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, .75fr) minmax(0, 1.45fr);
+    gap: 24px;
+    padding-block: 36px 38px;
+  }
+  .footer-brand {
+    display: inline-flex;
+    align-items: center;
+    color: var(--text);
+    font-size: 19px;
+    font-weight: 750;
+    letter-spacing: -.035em;
+    text-decoration: none;
+  }
+  .footer-brand:hover { color: var(--accent); }
+  .footer-locations {
+    display: grid;
+    gap: 9px;
+    margin-top: 18px;
+  }
+  .footer-location {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    color: var(--muted);
+    font-size: 13px;
+  }
+  .footer-location svg {
+    flex: none;
+    width: 16px;
+    height: 16px;
+    color: var(--accent);
+  }
+  .footer-heading {
+    margin: 0 0 14px;
+    color: var(--text);
+    font-size: 15px;
     font-weight: 700;
   }
-  .bar .brand svg { width: 22px; height: 22px; }
-  .bar a:hover { text-decoration: underline; }
-  main {
-    width: calc(100% - 32px);
-    max-width: 600px;
-    flex: 1;
-    margin: 32px auto;
+  .footer-project-links {
+    display: grid;
+    justify-items: start;
+    gap: 10px;
   }
-  h1 {
-    font-size: 26px;
-    margin: 0 0 12px;
+  .footer-project-links a {
+    color: var(--muted);
+    text-decoration: none;
+    overflow-wrap: anywhere;
   }
-  footer {
-    padding: 12px 16px;
-    border-top: 1px solid color-mix(in srgb, currentColor 20%, transparent);
-    font-size: 14px;
-    text-align: center;
+  .footer-project-links a:hover { text-decoration: underline; }
+  .footer-emails { display: grid; gap: 10px; }
+  .footer-email-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 9px;
+    min-width: 0;
   }
-  footer a { color: inherit; }
-  h2 { font-size: 20px; margin: 32px 0 8px; }
-  li { margin-bottom: 6px; }
-  dt { font-weight: 600; margin-top: 14px; }
-  dd { margin: 2px 0 0; }
-  details {
-    margin-top: 28px;
-    border: 1px solid color-mix(in srgb, currentColor 20%, transparent);
-    border-radius: 8px;
-    padding: 12px 16px;
+  .footer-email-row > svg {
+    width: 16px;
+    height: 16px;
+    flex: none;
+    margin-top: 4px;
+    color: var(--accent);
   }
-  summary {
-    cursor: pointer;
-    font-weight: 600;
+  .footer-email-row a { min-width: 0; overflow-wrap: anywhere; }
+  .site-footer a { text-underline-offset: 3px; transition: color 150ms ease; }
+  .site-footer a:hover { color: var(--accent); }
+  .footer-copyright {
+    margin-top: 20px;
+    color: var(--muted);
+    font-size: 12px;
   }
-  summary:hover { text-decoration: underline; }
-  details h2:first-of-type { margin-top: 24px; }
+  .footer-top-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 19px;
+    color: var(--muted);
+    font-size: 12px;
+    text-decoration: none;
+  }
+  .footer-top-link svg { width: 14px; height: 14px; }
+
+  @media (max-width: 680px) {
+    .navigation { padding-block: 12px; }
+    .nav-links { gap: 8px 14px; }
+    .navigation { gap: 8px 12px; }
+    main { padding-block: 46px 52px; }
+    .hero { margin-bottom: 36px; }
+    .projects { grid-template-columns: 1fr; }
+    .project-card { padding: 24px; }
+    .project-icon { margin-bottom: 18px; }
+    .team-section, .domain-section { margin-top: 52px; }
+    .team-grid { grid-template-columns: 1fr; }
+    .team-group { padding: 22px 24px; }
+    .footer-inner { grid-template-columns: 1fr; gap: 30px; padding-block: 32px 34px; }
+    /* Пошта може переноситися, а кнопка копіювання лишається збоку. */
+    .footer-email-row .email-contact {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 28px;
+      align-items: start;
+      gap: 2px;
+      width: 100%;
+    }
+    .footer-email-row .email-contact .copy-error {
+      grid-column: 1 / -1;
+      justify-self: end;
+    }
+  }
+  /* Системне налаштування зменшення анімацій має пріоритет. */
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after, .domain-section details::details-content {
+      animation: none !important;
+      transition: none !important;
+    }
+    .project-card:hover { transform: none; }
+    .project-card-anchor:hover .project-link svg { transform: none; }
+  }
 </style>
 </head>
 <body>
 
-<nav class="bar" aria-label="Основна навігація">
-  <a class="brand" href="https://notdevelopers.dev">
-    <svg viewBox="0 0 32 32" aria-hidden="true">
-      <rect width="32" height="32" rx="7" fill="#0f172a"/>
-      <rect x="7" y="7" width="4" height="12" rx="2" fill="#5fd0a5"/>
-      <circle cx="9" cy="23.5" r="2.3" fill="#5fd0a5"/>
-      <circle cx="19" cy="20" r="4.4" fill="none" stroke="#fff" stroke-width="3.2"/>
-      <path d="M23.4 7.5v17.5" stroke="#fff" stroke-width="3.2" stroke-linecap="round"/>
-    </svg>
-    !developers
-  </a>
-  <a href="https://diytut.notdevelopers.dev">ДійТут</a>
-  <a href="https://schedule.notdevelopers.dev">Розклад uni</a>
-</nav>
+<header class="site-header">
+  <nav class="container navigation" aria-label="Основна навігація">
+    <a class="brand" href="https://notdevelopers.dev/">
+      <svg viewBox="0 0 32 32" aria-hidden="true">
+        <rect width="32" height="32" rx="7" fill="#0f172a"/>
+        <rect x="7" y="7" width="4" height="12" rx="2" fill="#5fd0a5"/>
+        <circle cx="9" cy="23.5" r="2.3" fill="#5fd0a5"/>
+        <circle cx="19" cy="20" r="4.4" fill="none" stroke="#fff" stroke-width="3.2"/>
+        <path d="M23.4 7.5v17.5" stroke="#fff" stroke-width="3.2" stroke-linecap="round"/>
+      </svg>
+      !developers
+    </a>
+    <div class="nav-links">
+      <div class="nav-projects">
+        <a href="#projects">Проєкти</a>
+        <details class="nav-dropdown" hidden>
+          <summary aria-label="Показати список проєктів"><span class="visually-hidden">Показати список проєктів</span></summary>
+          <!-- Пункти меню формуються автоматично з карток у #projects. -->
+          <div class="nav-dropdown-menu"></div>
+        </details>
+      </div>
+      <a href="#team">Команда</a>
+      <a href="#contacts">Контакти</a>
+    </div>
+  </nav>
+</header>
 
-<main>
+<main class="container">
+  <section class="hero" aria-labelledby="page-title">
+    <p class="eyebrow">Команда розробників</p>
+    <h1 id="page-title">Про команду <span>!developers</span></h1>
+    <p>Тут ми збираємо наші проєкти, ділимося результатами роботи та залишаємо швидкий доступ до кожного з них.</p>
+  </section>
 
-<h1>!developers</h1>
-<p>Це сайт команди !developers, на якому розміщено декілька наших проєктів.</p>
+  <section id="projects" aria-labelledby="projects-title">
+    <div class="section-header">
+      <h2 id="projects-title">Наші проєкти</h2>
+      <p>Проєкти, над якими працює наша команда.</p>
+    </div>
 
-<details>
-  <summary>Інформація про домен</summary>
+    <div class="projects">
+      <article class="project-card">
+        <a class="project-card-anchor" href="https://diytut.notdevelopers.dev/" aria-labelledby="project-diytut-title">
+          <div class="project-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20.8 9.1c0 4-8.8 10-8.8 10s-8.8-6-8.8-10a4.5 4.5 0 0 1 8.8-1.2 4.5 4.5 0 0 1 8.8 1.2Z"/>
+            </svg>
+          </div>
+          <p class="project-type">Навчальна волонтерська платформа</p>
+          <h3 id="project-diytut-title">ДійТут</h3>
+          <p>Платформа, на якій неприбуткові організації публікують волонтерські проєкти, а волонтери долучаються до них та отримують підтверджені години роботи. Розробляється з навчальною метою.</p>
+          <span class="project-link">
+            Перейти до проєкту
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg>
+          </span>
+        </a>
+      </article>
 
-  <p>Тут коротко про те, що цей домен нам дає, скільки коштує і як ним користуватися.</p>
+      <article class="project-card">
+        <a class="project-card-anchor" href="https://schedule.notdevelopers.dev/" aria-labelledby="project-schedule-title">
+          <div class="project-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="5" width="18" height="16" rx="2"/>
+              <path d="M7 3v4m10-4v4M3 10h18M8 14h3m-3 4h3m3-4h3"/>
+            </svg>
+          </div>
+          <p class="project-type">Університетський інструмент</p>
+          <h3 id="project-schedule-title">Розклад uni</h3>
+          <p>Вебзастосунок для перегляду розкладу пар. Окремі розділи допомагають знаходити інформацію про аудиторії та викладачів.</p>
+          <span class="project-link">
+            Переглянути розклад
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg>
+          </span>
+        </a>
+      </article>
+    </div>
+  </section>
 
-  <h2>Що дає</h2>
-  <ul>
-    <li>Захист через Cloudflare: IP сервера з API не видно ззовні, і атаки впираються в них, а не в нас.</li>
-    <li>Застосунок не зламається при переїзді на інший сервер: міняється один запис у DNS, а не адреса в коді.</li>
-    <li>HTTPS для сайтів і API без ручної роботи з сертифікатами.</li>
-    <li>Піддомен для свого: ім'я.notdevelopers.dev під власні проєкти чи як бажаєте.</li>
-  </ul>
+  <section class="team-section" id="team" aria-labelledby="team-title">
+    <div class="section-header">
+      <h2 id="team-title">Наша команда</h2>
+      <p>Люди, які працюють над нашими проєктами.</p>
+    </div>
 
-  <h2>Ціна</h2>
-  <p>Перший рік безкоштовний (до 10 жовтня 2027). Далі $12,2 на рік, тобто приблизно 80 гривень з людини.</p>
+    <div class="team-grid">
+      <section class="team-group" aria-labelledby="team-lead-title">
+        <h3 id="team-lead-title">Лідер команди</h3>
+        <ul class="team-list">
+          <li class="team-member">
+            <span class="team-name">Володимир</span>
+            <span class="team-role">Лідер команди · Backend · бізнес-аналіз</span>
+          </li>
+        </ul>
+      </section>
 
-  <h2>Питання</h2>
-  <dl>
-    <dt>Як отримати піддомен?</dt>
-    <dd>Напишіть у групу, яке ім'я хочете і куди воно має вести: GitHub Pages, свій сервер чи щось інше. Запис додається за кілька хвилин.</dd>
+      <section class="team-group" aria-labelledby="team-backend-title">
+        <h3 id="team-backend-title">Backend</h3>
+        <ul class="team-list">
+          <li class="team-member">
+            <span class="team-name">Даніл</span>
+            <span class="team-role">Backend · бази даних</span>
+          </li>
+          <li class="team-member">
+            <span class="team-name">Олег</span>
+            <span class="team-role">Backend · розгортання</span>
+          </li>
+        </ul>
+      </section>
 
-    <dt>Що можна там розмістити?</dt>
-    <dd>Резюме, власний чи командний проєкт, тестову версію чогось.</dd>
+      <section class="team-group" aria-labelledby="team-frontend-title">
+        <h3 id="team-frontend-title">Frontend</h3>
+        <ul class="team-list">
+          <li class="team-member"><span class="team-name">Арсеній</span></li>
+          <li class="team-member">
+            <span class="team-name">Дарія</span>
+            <span class="team-role">Frontend · Scrum Master</span>
+          </li>
+          <li class="team-member"><span class="team-name">Нестор</span></li>
+        </ul>
+      </section>
 
-    <dt>Що буде через рік?</dt>
-    <dd>Якщо домен нам потрібен, скидаємось на продовження. Якщо ні, він просто закінчиться.</dd>
+      <section class="team-group" aria-labelledby="team-design-title">
+        <h3 id="team-design-title">Дизайн</h3>
+        <ul class="team-list">
+          <li class="team-member"><span class="team-name">Дар'я</span></li>
+        </ul>
+      </section>
+    </div>
+  </section>
 
-    <dt>А якщо хочемо іншу назву?</dt>
-    <dd>Скажіть. Поки адресу не зашито в застосунок, змінити її легко.</dd>
-  </dl>
+  <section class="domain-section" id="domain" aria-labelledby="domain-title">
+    <h2 id="domain-title">Про наш домен</h2>
+    <details>
+      <summary>Внутрішні особливості використання домену (застаріла інформація)</summary>
+      <div class="domain-content">
+        <p>Тут коротко про те, що цей домен нам дає, скільки коштує і як ним користуватися.</p>
 
-  <h2>Ідеї</h2>
-  <p>Є ідеї для головної сторінки? Напишіть.</p>
-</details>
+        <h3>Що дає</h3>
+        <ul>
+          <li>Захист через Cloudflare: IP сервера з API не видно ззовні, і атаки впираються в них, а не в нас.</li>
+          <li>Застосунок не зламається при переїзді на інший сервер: міняється один запис у DNS, а не адреса в коді.</li>
+          <li>HTTPS для сайтів і API без ручної роботи з сертифікатами.</li>
+          <li>Піддомен для свого: ім'я.notdevelopers.dev під власні проєкти чи як бажаєте.</li>
+        </ul>
 
+        <h3>Ціна</h3>
+        <p>Перший рік безкоштовний (до 10 жовтня 2027). Далі $12,2 на рік, тобто приблизно 80 гривень з людини.</p>
+
+        <h3>Питання</h3>
+        <dl>
+          <dt>Як отримати піддомен?</dt>
+          <dd>Напишіть у групу, яке ім'я хочете і куди воно має вести: GitHub Pages, свій сервер чи щось інше. Запис додається за кілька хвилин.</dd>
+
+          <dt>Що можна там розмістити?</dt>
+          <dd>Резюме, власний чи командний проєкт, тестову версію чогось.</dd>
+
+          <dt>Що буде через рік?</dt>
+          <dd>Якщо домен нам потрібен, скидаємось на продовження. Якщо ні, він просто закінчиться.</dd>
+
+          <dt>А якщо хочемо іншу назву?</dt>
+          <dd>Скажіть. Поки адресу не зашито в застосунок, змінити її легко.</dd>
+        </dl>
+
+        <h3>Ідеї</h3>
+        <p>Є ідеї для головної сторінки? Напишіть.</p>
+      </div>
+    </details>
+  </section>
 </main>
 
-<footer>
-  Підтримка:
-  <a href="mailto:team@notdevelopers.dev">team@notdevelopers.dev</a>
-  або
-  <a href="mailto:diytut-support@googlegroups.com">diytut-support@googlegroups.com</a>
+<footer id="contacts" class="site-footer">
+  <div class="container footer-inner">
+    <div class="footer-identity">
+      <a class="footer-brand" href="https://notdevelopers.dev/">!developers</a>
+      <div class="footer-locations" aria-label="Міста команди">
+        <div class="footer-location"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg><span>Одеса, Україна</span></div>
+        <div class="footer-location"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg><span>Стокгольм, Швеція</span></div>
+      </div>
+      <div class="footer-copyright">© !developers</div>
+    </div>
+    <nav class="footer-projects" aria-labelledby="footer-projects-title">
+      <h2 class="footer-heading" id="footer-projects-title">Проєкти</h2>
+      <div class="footer-project-links" id="footer-project-links">
+        <a href="#projects">Переглянути проєкти</a>
+      </div>
+    </nav>
+    <section class="footer-support" aria-labelledby="footer-support-title">
+      <h2 class="footer-heading" id="footer-support-title">Підтримка</h2>
+      <div class="footer-emails">
+        <div class="footer-email-row">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m4 7 8 6 8-6"/></svg>
+          <span class="email-contact">
+            <a href="mailto:team@notdevelopers.dev">team@notdevelopers.dev</a>
+            <button class="copy-email" type="button" data-email="team@notdevelopers.dev" hidden aria-label="Скопіювати адресу team@notdevelopers.dev" title="Скопіювати адресу">
+              <svg class="icon-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg>
+              <svg class="icon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" hidden><path d="m5 12 5 5L20 7"/></svg>
+            </button>
+            <span class="copy-error" hidden>Не вдалося</span>
+          </span>
+        </div>
+        <div class="footer-email-row">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m4 7 8 6 8-6"/></svg>
+          <span class="email-contact">
+            <a href="mailto:diytut-support@googlegroups.com">diytut-support@googlegroups.com</a>
+            <button class="copy-email" type="button" data-email="diytut-support@googlegroups.com" hidden aria-label="Скопіювати адресу diytut-support@googlegroups.com" title="Скопіювати адресу">
+              <svg class="icon-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg>
+              <svg class="icon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" hidden><path d="m5 12 5 5L20 7"/></svg>
+            </button>
+            <span class="copy-error" hidden>Не вдалося</span>
+          </span>
+        </div>
+      </div>
+      <span id="copy-feedback" class="visually-hidden" aria-live="polite" aria-atomic="true"></span>
+      <a class="footer-top-link" href="#">Нагору <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5m-6 6 6-6 6 6"/></svg></a>
+    </section>
+  </div>
 </footer>
 
+<script>
+  (() => {
+    // Єдине джерело даних про проєкти — картки в HTML.
+    // Для нового проєкту достатньо додати картку з класом .project-card,
+    // одним .project-card-anchor і заголовком h3: меню та футер оновляться самі.
+    const dropdown = document.querySelector('.nav-dropdown');
+    const dropdownTrigger = dropdown?.querySelector('summary');
+    const dropdownLabel = dropdownTrigger?.querySelector('.visually-hidden');
+    const dropdownMenu = dropdown?.querySelector('.nav-dropdown-menu');
+
+    // Спільні назви й URL для меню та футера беремо з карток проєктів.
+    const projects = [...document.querySelectorAll('#projects .project-card')]
+      .map((card) => {
+        const link = card.querySelector('a.project-card-anchor');
+        const title = card.querySelector('h3');
+        if (!link || !title) return null;
+        return { name: title.textContent.trim(), url: link.href };
+      })
+      .filter(Boolean);
+
+    const createProjectLinks = () => projects.map(({ name, url }) => {
+      const link = document.createElement('a');
+      link.href = url;
+      link.textContent = name;
+      return link;
+    });
+
+    const footerProjectLinks = document.getElementById('footer-project-links');
+    if (footerProjectLinks && projects.length > 0) {
+      footerProjectLinks.replaceChildren(...createProjectLinks());
+    }
+
+    if (dropdown && dropdownTrigger && dropdownMenu) {
+      if (projects.length > 0) {
+        dropdownMenu.replaceChildren(...createProjectLinks());
+        dropdown.hidden = false;
+      }
+
+      // <details> працює нативно; JS додає закриття ззовні та по Esc.
+      const closeDropdown = (restoreFocus = false) => {
+        if (!dropdown.open) return;
+        dropdown.open = false;
+        if (restoreFocus) dropdownTrigger.focus();
+      };
+
+      dropdown.addEventListener('toggle', () => {
+        const label = dropdown.open ? 'Приховати список проєктів' : 'Показати список проєктів';
+        dropdownTrigger.setAttribute('aria-label', label);
+        if (dropdownLabel) dropdownLabel.textContent = label;
+      });
+
+      document.addEventListener('pointerdown', (event) => {
+        if (!dropdown.contains(event.target)) closeDropdown();
+      });
+
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && dropdown.open) {
+          event.preventDefault();
+          closeDropdown(true);
+        }
+      });
+
+      dropdown.addEventListener('focusout', (event) => {
+        if (event.relatedTarget && !dropdown.contains(event.relatedTarget)) closeDropdown();
+      });
+
+      dropdown.querySelectorAll('.nav-dropdown-menu a').forEach((link) => {
+        link.addEventListener('click', () => closeDropdown());
+      });
+    }
+
+    // Прокрутка до секцій враховує фактичну висоту липкої панелі.
+    const header = document.querySelector('.site-header');
+    if (header) {
+      const updateScrollOffset = () => {
+        const offset = Math.ceil(header.getBoundingClientRect().height) + 16;
+        document.documentElement.style.setProperty('--header-offset', `${offset}px`);
+      };
+      updateScrollOffset();
+      if ('ResizeObserver' in window) {
+        new ResizeObserver(updateScrollOffset).observe(header);
+      } else {
+        window.addEventListener('resize', updateScrollOffset);
+      }
+    }
+
+    // Компактні кнопки копіювання біля обох адрес.
+    // Без Clipboard API адреси все одно залишаються звичайними mailto-посиланнями.
+    if (navigator.clipboard?.writeText) {
+      const feedback = document.getElementById('copy-feedback');
+      document.querySelectorAll('.copy-email').forEach((button) => {
+        const email = button.dataset.email;
+        const copyIcon = button.querySelector('.icon-copy');
+        const checkIcon = button.querySelector('.icon-check');
+        const errorLabel = button.closest('.email-contact')?.querySelector('.copy-error');
+        let resetTimer;
+        let requestId = 0;
+        button.hidden = false;
+
+        button.addEventListener('click', async () => {
+          clearTimeout(resetTimer);
+          const currentRequest = ++requestId;
+          if (errorLabel) errorLabel.hidden = true;
+          try {
+            await navigator.clipboard.writeText(email);
+            if (currentRequest !== requestId) return;
+            button.dataset.status = 'success';
+            copyIcon.toggleAttribute('hidden', true);
+            checkIcon.toggleAttribute('hidden', false);
+            button.setAttribute('aria-label', `Скопійовано: ${email}`);
+            button.title = 'Скопійовано';
+            if (feedback) feedback.textContent = `Скопійовано адресу ${email}`;
+          } catch (_) {
+            if (currentRequest !== requestId) return;
+            if (errorLabel) errorLabel.hidden = false;
+            delete button.dataset.status;
+            copyIcon.toggleAttribute('hidden', false);
+            checkIcon.toggleAttribute('hidden', true);
+            button.setAttribute('aria-label', `Не вдалося скопіювати ${email}`);
+            button.title = 'Не вдалося скопіювати';
+            if (feedback) feedback.textContent = `Не вдалося скопіювати адресу ${email}`;
+          }
+
+          const delay = errorLabel && !errorLabel.hidden ? 5000 : 2000;
+          resetTimer = setTimeout(() => {
+            if (errorLabel) errorLabel.hidden = true;
+            delete button.dataset.status;
+            copyIcon.toggleAttribute('hidden', false);
+            checkIcon.toggleAttribute('hidden', true);
+            button.setAttribute('aria-label', `Скопіювати адресу ${email}`);
+            button.title = 'Скопіювати адресу';
+          }, delay);
+        });
+      });
+    }
+  })();
+</script>
 </body>
 </html>
